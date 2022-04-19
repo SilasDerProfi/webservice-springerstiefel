@@ -7,4 +7,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(path = "/category")
 public class CategoryController {
 
+    @RequestMapping("/test")
+  	public Category test() {
+    	return new Category("Example");
+  	}
+
 }
