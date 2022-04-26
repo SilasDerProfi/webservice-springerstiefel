@@ -1,10 +1,29 @@
 package com.webservice.springerstiefel.category;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "/category")
 public class CategoryController {
+    @Autowired
+    private CategoryRepository catRepo;
 
+    @PostMapping(path = "/addCat")
+    public @ResponseBody String addNewCategory(@RequestParam String name) {
+        Category c = new Category(name);
+        catRepo.save(c);
+        return "success";
+    }
+
+    @PostMapping(path = "/deleteCat")
+    public @ResponseBody String deleteCategory(@RequestParam int id) {
+        catRepo.deleteById(id);
+        return "success";
+    }
+
+    @GetMapping(path="/allCats")
+    public @ResponseBody Iterable<Category> getAll() {
+        return catRepo.findAll();
+    }
 }
