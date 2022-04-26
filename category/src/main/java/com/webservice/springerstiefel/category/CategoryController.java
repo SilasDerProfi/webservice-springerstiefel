@@ -25,8 +25,8 @@ public class CategoryController {
     public @ResponseBody String deleteCategory(@RequestParam int id) {
         catRepo.deleteById(id);
         RestTemplate restTemplate = new RestTemplate();
-        String prodResourceUrl = "http://localhost:8081/product/deleteProdByCat/" + id;
-        ResponseEntity<String> result = restTemplate.exchange(prodResourceUrl, HttpMethod.PUT, null, String.class);
+        String prodResourceUrl = "http://localhost:8082/product/deleteProdByCat?categoryId=" + id;
+        ResponseEntity<String> result = restTemplate.exchange(prodResourceUrl, HttpMethod.POST, null, String.class);
         return "success";
     }
 
