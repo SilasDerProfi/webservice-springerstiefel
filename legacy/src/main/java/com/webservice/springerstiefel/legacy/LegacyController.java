@@ -1,4 +1,4 @@
-package com.webservice.springerstiefel.category;
+package com.webservice.springerstiefel.legacy;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
