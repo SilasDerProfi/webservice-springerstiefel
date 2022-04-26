@@ -1,8 +1,12 @@
 package com.webservice.springerstiefel.category;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+
+import java.net.http.HttpHeaders;
 
 @RestController
 @RequestMapping(path = "/category")
@@ -21,7 +25,8 @@ public class CategoryController {
     public @ResponseBody String deleteCategory(@RequestParam int id) {
         catRepo.deleteById(id);
         RestTemplate restTemplate = new RestTemplate();
-        String prodResourceUrl = "http://localhost:8081/deleteProdByCat/" ;
+        String prodResourceUrl = "http://localhost:8081/product/deleteProdByCat/" + id;
+        ResponseEntity<String> result = restTemplate.exchange(prodResourceUrl, HttpMethod.PUT, null, String.class);
         return "success";
     }
 
