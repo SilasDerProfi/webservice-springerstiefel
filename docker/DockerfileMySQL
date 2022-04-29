@@ -1,5 +1,4 @@
 FROM mysql:5.7.17
 
-RUN rm -rf /var/lib/mysql
 COPY ./sql/init-category-db.sql /docker-entrypoint-initdb.d/init-category-db.sql
 COPY ./sql/init-product-db.sql /docker-entrypoint-initdb.d/init-product-db.sql
