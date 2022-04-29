@@ -8,6 +8,7 @@ class CategoryApplicationTests {
 
     @Test
     void contextLoads() {
+        System.out.println("Hello");
     }
 
 }

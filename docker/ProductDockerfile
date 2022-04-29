@@ -1,0 +1,8 @@
+FROM maven:3.8.5-openjdk-11 as builder
+
+COPY ./product/ ./
+RUN mvn clean package -Dmaven.test.skip=true
+
+ENTRYPOINT [ "java", "-jar", "target/Product-0.0.1-SNAPSHOT.jar" ]
+
+EXPOSE 8080

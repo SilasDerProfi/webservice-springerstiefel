@@ -1,0 +1,11 @@
+CREATE USER 'category'@'%' IDENTIFIED BY 'geheim';
+CREATE DATABASE category;
+GRANT ALL PRIVILEGES ON category.* TO 'category'@'%';
+FLUSH PRIVILEGES;
+
+CREATE TABLE category (
+	id INT NOT NULL AUTO_INCREMENT,
+	name VARCHAR(255) NOT NULL,
+	PRIMARY KEY (id)
+) ENGINE=InnoDB;
+

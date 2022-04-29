@@ -26,4 +26,5 @@ public class CategoryController {
     public @ResponseBody Iterable<Category> getAll() {
         return catRepo.findAll();
     }
+
 }
