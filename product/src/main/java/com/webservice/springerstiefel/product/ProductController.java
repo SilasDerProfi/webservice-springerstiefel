@@ -3,6 +3,8 @@ package com.webservice.springerstiefel.product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Iterator;
+
 @RestController
 @RequestMapping(path = "/product")
 public class ProductController {
@@ -20,6 +22,17 @@ public class ProductController {
     @PostMapping(path = "/deleteProd")
     public @ResponseBody String deleteProduct(@RequestParam int id) {
         prodRepo.deleteById(id);
+        return "success";
+    }
+
+    @PostMapping(path = "/deleteProdByCat")
+    public @ResponseBody String deleteProductByCatId(@RequestParam int categoryId) {
+        Iterable<Product> products = prodRepo.findAll();
+        for (Product p : products) {
+            if (p.getCategoryId() == categoryId) {
+                prodRepo.delete(p);
+            }
+        }
         return "success";
     }
 
