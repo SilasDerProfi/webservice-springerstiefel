@@ -18,15 +18,18 @@ public class CategoryController {
     public @ResponseBody String addNewCategory(@RequestParam String name) {
         Category c = new Category(name);
         catRepo.save(c);
+        //TODO: change return type -> category
         return "success";
     }
 
+    //TODO: change mapping to delete
     @PostMapping(path = "/deleteCat")
     public @ResponseBody String deleteCategory(@RequestParam int id) {
         RestTemplate restTemplate = new RestTemplate();
         String prodResourceUrl = "http://productservice:8082/product/deleteProdByCat?categoryId=" + id;
         ResponseEntity<String> result = restTemplate.exchange(prodResourceUrl, HttpMethod.POST, null, String.class);
         catRepo.deleteById(id);
+        //TODO: change return type?
         return "success";
     }
 

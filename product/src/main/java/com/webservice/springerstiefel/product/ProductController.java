@@ -14,17 +14,20 @@ public class ProductController {
     @PostMapping(path = "/addProd")
     public @ResponseBody
     String addNewProduct(@RequestParam String name, @RequestParam int categoryId, @RequestParam double price) {
+        //TODO: check if category exists before adding product
         Product p = new Product(name, categoryId, price);
         prodRepo.save(p);
         return "success";
     }
 
+    //TODO: Change mapping to delete?
     @PostMapping(path = "/deleteProd")
     public @ResponseBody String deleteProduct(@RequestParam int id) {
         prodRepo.deleteById(id);
         return "success";
     }
 
+    //TODO: change mapping to delete?
     @PostMapping(path = "/deleteProdByCat")
     public @ResponseBody String deleteProductByCatId(@RequestParam int categoryId) {
         Iterable<Product> products = prodRepo.findAll();
@@ -33,6 +36,7 @@ public class ProductController {
                 prodRepo.delete(p);
             }
         }
+        //TODO: change return type?
         return "success";
     }
 
