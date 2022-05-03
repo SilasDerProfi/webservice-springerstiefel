@@ -24,7 +24,6 @@ public class CategoryController {
         return c;
     }
 
-    //TODO: change mapping to delete
     @DeleteMapping(path = "/deleteCat")
     public @ResponseBody String deleteCategory(@RequestParam int id) {
         RestTemplate restTemplate = new RestTemplate();
