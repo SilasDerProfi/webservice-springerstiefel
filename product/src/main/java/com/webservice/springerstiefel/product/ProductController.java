@@ -18,7 +18,7 @@ public class ProductController {
     public @ResponseBody Product addNewProduct(@RequestParam String name, @RequestParam int categoryId,
             @RequestParam double price) {
         RestTemplate restTemplate = new RestTemplate();
-        String prodResourceUrl = "http://productservice:8082/category/categoryExists?productId=" + categoryId;
+        String prodResourceUrl = "http://categoryservice:8081/category/categoryExists?id=" + categoryId;
         ResponseEntity<Boolean> result = restTemplate.exchange(prodResourceUrl, HttpMethod.GET, null, Boolean.class);
 
         if (!result.getBody())
@@ -30,25 +30,21 @@ public class ProductController {
         return p;
     }
 
-    // TODO: Change mapping to delete?
     @DeleteMapping(path = "/deleteProd")
     public @ResponseBody String deleteProduct(@RequestParam int id) {
         prodRepo.deleteById(id);
-        // TODO: change return type?
         return "success";
     }
 
-    // TODO: change mapping to delete?
     @DeleteMapping(path = "/deleteProdByCat")
-    public @ResponseBody String deleteProductByCatId(@RequestParam int categoryId) {
+    public @ResponseBody Iterable<Product> deleteProductByCatId(@RequestParam int categoryId) {
         Iterable<Product> products = prodRepo.findAll();
         for (Product p : products) {
             if (p.getCategoryId() == categoryId) {
                 prodRepo.delete(p);
             }
         }
-        // TODO: change return type?
-        return "success";
+        return products;
     }
 
     @GetMapping(path = "/allProds")
