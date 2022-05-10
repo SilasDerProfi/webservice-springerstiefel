@@ -27,7 +27,7 @@ public class ProductController {
 
     @PostMapping()
     public @ResponseBody Product addNewProduct(@RequestParam String name, @RequestParam int categoryId,
-            @RequestParam double price, @RequestParam String details) {
+            @RequestParam double price, @RequestParam(defaultValue = "") String details) {
         RestTemplate restTemplate = new RestTemplate();
         String prodResourceUrl = "http://categoryservice:8081/categories/categoryExists/" + categoryId;
         ResponseEntity<Boolean> result = restTemplate.exchange(prodResourceUrl, HttpMethod.GET, null, Boolean.class);
@@ -70,7 +70,7 @@ public class ProductController {
     	List<Product> products = new ArrayList<>();
     	
     	for (var p : prodRepo.findAll()) {
-    		if (p.getPrice() >= maxPrice)
+    		if (p.getPrice() > maxPrice)
     			continue;
     		if (p.getPrice() < minPrice)
     			continue;
