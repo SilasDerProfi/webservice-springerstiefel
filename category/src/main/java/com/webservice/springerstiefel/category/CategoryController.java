@@ -11,24 +11,25 @@ import org.springframework.web.server.ResponseStatusException;
 import java.net.http.HttpHeaders;
 import java.util.Optional;
 
+import javax.websocket.server.PathParam;
+
 @RestController
-@RequestMapping(path = "/category")
+@RequestMapping(path = "/categories")
 public class CategoryController {
     @Autowired
     private CategoryRepository catRepo;
 
-    @PostMapping(path = "/addCat")
-    public @ResponseBody Category addNewCategory(@RequestParam String name) {
+    @PostMapping()
+    public @ResponseBody Category addNewCategory(@RequestParam("name") String name) {
         Category c = new Category(name);
         c = catRepo.save(c);
         return c;
     }
 
-    //TODO: change mapping to delete
-    @DeleteMapping(path = "/deleteCat")
-    public @ResponseBody String deleteCategory(@RequestParam int id) {
+    @DeleteMapping(path = "/{id}")
+    public @ResponseBody String deleteCategory(@PathVariable("id") int id) {
         RestTemplate restTemplate = new RestTemplate();
-        String prodResourceUrl = "http://productservice:8082/product/deleteProdByCat?categoryId=" + id;
+        String prodResourceUrl = "http://productservice:8082/products?categoryId=" + id;
         ResponseEntity<String> result = restTemplate.exchange(prodResourceUrl, HttpMethod.DELETE, null, String.class);
         
 
@@ -46,18 +47,18 @@ public class CategoryController {
         return "success";
     }
 
-    @GetMapping(path="/allCats")
+    @GetMapping()
     public @ResponseBody Iterable<Category> getAll() {
         return catRepo.findAll();
     }
 
-    @GetMapping(path = "/categoryExists")
-    public @ResponseBody Boolean categoryExists(@RequestParam int id){
+    @GetMapping(path = "/categoryExists/{id}")
+    public @ResponseBody Boolean categoryExists(@PathVariable("id") int id){
         return catRepo.existsById(id);
     }
 
-    @GetMapping()
-    public @ResponseBody Category getCategory(@RequestParam int id){
+    @GetMapping(path = "/{id}")
+    public @ResponseBody Category getCategory(@PathVariable("id") int id){
         Optional<Category> cat = catRepo.findById(id);
         if(cat.isEmpty()){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "category with id " + id + " not found");
