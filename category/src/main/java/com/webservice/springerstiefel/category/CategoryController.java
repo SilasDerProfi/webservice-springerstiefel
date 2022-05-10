@@ -28,6 +28,7 @@ public class CategoryController {
 
     @DeleteMapping(path = "/{id}")
     public @ResponseBody String deleteCategory(@PathVariable("id") int id) {
+
         RestTemplate restTemplate = new RestTemplate();
         String prodResourceUrl = "http://productservice:8082/products?categoryId=" + id;
         ResponseEntity<String> result = restTemplate.exchange(prodResourceUrl, HttpMethod.DELETE, null, String.class);
