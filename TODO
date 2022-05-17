@@ -1,5 +1,5 @@
 TODO:
--Kubernetes zum laufen bringen:
+- Kubernetes zum laufen bringen:
 	- Build Script für Docker
 	- Deployment Script Kubernetes
 	- Stateful application und persistence volume für Datenbank
@@ -7,7 +7,7 @@ TODO:
 - Experimente:
 	- Load Balancing in Repsonse sichtbar machen, einen Microservice mit 3 Replicas
 	- Ein Pod Löschen probieren, was passiert?
--Istio:
+- Istio:
 	- Istio migrieren
 	- Aufrufe beobachten in Prometeus und Graphana
 	- Topologier mit Kiali anzeigen lassen
