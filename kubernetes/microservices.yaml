@@ -18,7 +18,7 @@ spec:
         run: apache
     spec:
       containers:
-      - image: docker.io/mika2147/microservice-kubernetes-demo-apache:latest
+      - image: docker.io/mika2147/microservice-kubernetes-apache:latest
         name: apache
         ports:
         - containerPort: 80
@@ -49,6 +49,9 @@ spec:
       containers:
       - image: docker.io/mika2147/microservice-kubernetes-category:latest
         name: category
+        env:
+        - name: MYSQL_HOST
+          value: cpdatabase
         ports:
         - containerPort: 8081
         resources: {}
@@ -78,6 +81,9 @@ spec:
       containers:
       - image: docker.io/mika2147/microservice-kubernetes-product:latest
         name: product
+        env:
+        - name: MYSQL_HOST
+          value: cpdatabase
         ports:
         - containerPort: 8082
         resources: {}
@@ -110,6 +116,8 @@ spec:
         ports:
         - containerPort: 3306
           name: cpdatabase
+        args:
+          - "--ssl=0"
         volumeMounts:
         - name: cpdatabase-persistent-storage
           mountPath: /var/lib/mysql

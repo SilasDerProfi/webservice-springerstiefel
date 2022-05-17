@@ -1,3 +1,3 @@
 #!/bin/sh
-kubectl delete service category product cpdatabase
-kubectl delete deployments category product cpdatabase 
+kubectl delete service apache category product cpdatabase
+kubectl delete deployments apache category product cpdatabase 
