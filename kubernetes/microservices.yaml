@@ -162,7 +162,6 @@ spec:
     targetPort: 8081
   selector:
     run: category
-  type: LoadBalancer
 status:
   loadBalancer: {}
 
@@ -183,7 +182,6 @@ spec:
     targetPort: 8082
   selector:
     run: product
-  type: LoadBalancer
 status:
   loadBalancer: {}
 
