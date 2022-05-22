@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -25,11 +27,15 @@ public class ProductController {
     @Autowired
     private ProductRepository prodRepo;
 
+    private static final String CATEGORY_BASE_URL = "http://category.default.svc.cluster.local:8081/categories";
+
     @PostMapping()
     public @ResponseBody Product addNewProduct(@RequestParam String name, @RequestParam int categoryId,
-            @RequestParam double price, @RequestParam(defaultValue = "") String details) {
+            @RequestParam double price, @RequestParam(defaultValue = "") String details, HttpServletResponse response) {
+        response.setHeader("Pod-Name", System.getenv("HOSTNAME"));
+
         RestTemplate restTemplate = new RestTemplate();
-        String prodResourceUrl = "http://categoryservice:8081/categories/categoryExists/" + categoryId;
+        String prodResourceUrl = CATEGORY_BASE_URL + "/categoryExists/" + categoryId;
         ResponseEntity<Boolean> result = restTemplate.exchange(prodResourceUrl, HttpMethod.GET, null, Boolean.class);
 
         if (!result.getBody())
@@ -42,13 +48,17 @@ public class ProductController {
     }
 
     @DeleteMapping(path = "/{id}")
-    public @ResponseBody String deleteProduct(@PathVariable int id) {
+    public @ResponseBody String deleteProduct(@PathVariable int id, HttpServletResponse response) {
+        response.setHeader("Pod-Name", System.getenv("HOSTNAME"));
+
         prodRepo.deleteById(id);
         return "success";
     }
 
     @DeleteMapping()
-    public @ResponseBody Iterable<Product> deleteProductByCatId(@RequestParam(defaultValue = "-1") int categoryId) {
+    public @ResponseBody Iterable<Product> deleteProductByCatId(@RequestParam(defaultValue = "-1") int categoryId, HttpServletResponse response) {
+        response.setHeader("Pod-Name", System.getenv("HOSTNAME"));
+
         if(categoryId == -1){
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "You need to set a categoryId");
         }
@@ -66,7 +76,9 @@ public class ProductController {
     public @ResponseBody Iterable<Product> getAll(
     		@RequestParam(defaultValue="") String description,
     		@RequestParam(defaultValue="0") int minPrice,
-    		@RequestParam(defaultValue="" + Integer.MAX_VALUE) int maxPrice) {
+    		@RequestParam(defaultValue="" + Integer.MAX_VALUE) int maxPrice, HttpServletResponse response) {
+        response.setHeader("Pod-Name", System.getenv("HOSTNAME"));
+
     	List<Product> products = new ArrayList<>();
     	
     	for (var p : prodRepo.findAll()) {
@@ -83,7 +95,9 @@ public class ProductController {
     }
 
     @GetMapping(path = "/{id}")
-    public @ResponseBody Product getProduct(@PathVariable("id") int id) {
+    public @ResponseBody Product getProduct(@PathVariable("id") int id, HttpServletResponse response) {
+        response.setHeader("Pod-Name", System.getenv("HOSTNAME"));
+
         Optional<Product> product = prodRepo.findById(id);
 
         if(product.isEmpty()){

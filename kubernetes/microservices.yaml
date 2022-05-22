@@ -35,7 +35,7 @@ metadata:
     run: category
   name: category
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       run: category
