@@ -15,4 +15,5 @@
 #kubectl create deployment cpdatabase --image=docker.io/$DOCKER_ACCOUNT/microservice-kubernetes-database:latest --port=8080
 #kubectl expose deployment/cpdatabase --type="LoadBalancer" --port 3306
 minikube start
+kubectl apply -f infrastructure.yaml
 kubectl apply -f microservices.yaml

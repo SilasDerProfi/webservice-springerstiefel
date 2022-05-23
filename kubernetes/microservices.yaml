@@ -1,29 +1,29 @@
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  creationTimestamp: null
-  labels:
-    run: apache
-  name: apache
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      run: apache
-  strategy: {}
-  template:
-    metadata:
-      creationTimestamp: null
-      labels:
-        run: apache
-    spec:
-      containers:
-      - image: docker.io/mika2147/microservice-kubernetes-apache:latest
-        name: apache
-        ports:
-        - containerPort: 80
-        resources: {}
-status: {}
+#apiVersion: apps/v1
+#kind: Deployment
+#metadata:
+#  creationTimestamp: null
+#  labels:
+#    run: apache
+#  name: apache
+#spec:
+#  replicas: 1
+#  selector:
+#    matchLabels:
+#      run: apache
+#  strategy: {}
+#  template:
+#    metadata:
+#      creationTimestamp: null
+#      labels:
+#        run: apache
+#    spec:
+#      containers:
+#      - image: docker.io/mika2147/microservice-kubernetes-apache:latest
+#        name: apache
+#        ports:
+#        - containerPort: 80
+#        resources: {}
+#status: {}
 
 ---
 
@@ -91,62 +91,62 @@ status: {}
 
 ---
 
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: cpdatabase
-spec:
-  selector:
-    matchLabels:
-      app: cpdatabase
-  strategy:
-    type: Recreate
-  template:
-    metadata:
-      labels:
-        app: cpdatabase
-    spec:
-      containers:
-      - image: docker.io/mika2147/microservice-kubernetes-database:latest
-        name: cpdatabase
-        env:
-          # Use secret in real usage
-        - name: MYSQL_ROOT_PASSWORD
-          value: c8de110f37300a53a971749
-        ports:
-        - containerPort: 3306
-          name: cpdatabase
-        args:
-          - "--ssl=0"
-        volumeMounts:
-        - name: cpdatabase-persistent-storage
-          mountPath: /var/lib/mysql
-      volumes:
-      - name: cpdatabase-persistent-storage
-        persistentVolumeClaim:
-          claimName: cpdatabase-pv-claim
+#apiVersion: apps/v1
+#kind: Deployment
+#metadata:
+#  name: cpdatabase
+#spec:
+#  selector:
+#    matchLabels:
+#      app: cpdatabase
+#  strategy:
+#    type: Recreate
+#  template:
+#    metadata:
+#      labels:
+#        app: cpdatabase
+#    spec:
+#      containers:
+#      - image: docker.io/mika2147/microservice-kubernetes-database:latest
+#        name: cpdatabase
+#        env:
+#          # Use secret in real usage
+#        - name: MYSQL_ROOT_PASSWORD
+#          value: c8de110f37300a53a971749
+#        ports:
+#        - containerPort: 3306
+#          name: cpdatabase
+#        args:
+#          - "--ssl=0"
+#        volumeMounts:
+#        - name: cpdatabase-persistent-storage
+#          mountPath: /var/lib/mysql
+#      volumes:
+#      - name: cpdatabase-persistent-storage
+#        persistentVolumeClaim:
+#          claimName: cpdatabase-pv-claim
 
 ---
 
-apiVersion: v1
-kind: Service
-metadata:
-  creationTimestamp: null
-  labels:
-    run: apache
-  name: apache
-spec:
-  ports:
-  - port: 80
-    protocol: TCP
-    targetPort: 80
-  selector:
-    run: apache
-  type: LoadBalancer
-status:
-  loadBalancer: {}
-
----
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  creationTimestamp: null
+#  labels:
+#    run: apache
+#  name: apache
+#spec:
+#  ports:
+#  - port: 80
+#    protocol: TCP
+#    targetPort: 80
+#  selector:
+#    run: apache
+#  type: LoadBalancer
+#status:
+#  loadBalancer: {}
+#
+#---
 
 apiVersion: v1
 kind: Service
@@ -187,18 +187,18 @@ status:
 
 ---
 
-apiVersion: v1
-kind: Service
-metadata:
-  name: cpdatabase
-spec:
-  ports:
-  - port: 3306
-  selector:
-    app: cpdatabase
-  clusterIP: None
-
----
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  name: cpdatabase
+#spec:
+#  ports:
+#  - port: 3306
+#  selector:
+#    app: cpdatabase
+#  clusterIP: None
+#
+#---
 
 apiVersion: v1
 kind: PersistentVolume
@@ -226,4 +226,50 @@ spec:
   resources:
     requests:
       storage: 1Gi
+
+---
+
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: category
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - microservice-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /categories/
+    rewrite:
+      uri: /
+    route:
+    - destination:
+        port:
+          number: 80
+        host: category.default.svc.cluster.local
+
+---
+
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: product
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - microservice-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /products/
+    rewrite:
+      uri: /
+    route:
+    - destination:
+        port:
+          number: 80
+        host: product.default.svc.cluster.local
 
