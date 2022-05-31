@@ -1,29 +1,19 @@
-#apiVersion: apps/v1
-#kind: Deployment
-#metadata:
-#  creationTimestamp: null
-#  labels:
-#    run: apache
-#  name: apache
-#spec:
-#  replicas: 1
-#  selector:
-#    matchLabels:
-#      run: apache
-#  strategy: {}
-#  template:
-#    metadata:
-#      creationTimestamp: null
-#      labels:
-#        run: apache
-#    spec:
-#      containers:
-#      - image: docker.io/mika2147/microservice-kubernetes-apache:latest
-#        name: apache
-#        ports:
-#        - containerPort: 80
-#        resources: {}
-#status: {}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kube-config-map
+data:
+  mysql_host: "cpdatabase"
+   
+---
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: kube-database-auth
+type: kubernetes.io/basic-auth
+stringData:
+  password: "geheim"
 
 ---
 
@@ -51,7 +41,16 @@ spec:
         name: category
         env:
         - name: MYSQL_HOST
-          value: cpdatabase
+          valueFrom: 
+            configMapKeyRef:
+              name: kube-config-map
+              key: mysql_host
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: kube-database-auth
+              key: password
+              optional: false
         ports:
         - containerPort: 8081
         resources: {}
@@ -83,70 +82,22 @@ spec:
         name: product
         env:
         - name: MYSQL_HOST
-          value: cpdatabase
+          valueFrom: 
+            configMapKeyRef:
+              name: kube-config-map
+              key: mysql_host
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: kube-database-auth
+              key: password
+              optional: false
         ports:
         - containerPort: 8082
         resources: {}
 status: {}
 
 ---
-
-#apiVersion: apps/v1
-#kind: Deployment
-#metadata:
-#  name: cpdatabase
-#spec:
-#  selector:
-#    matchLabels:
-#      app: cpdatabase
-#  strategy:
-#    type: Recreate
-#  template:
-#    metadata:
-#      labels:
-#        app: cpdatabase
-#    spec:
-#      containers:
-#      - image: docker.io/mika2147/microservice-kubernetes-database:latest
-#        name: cpdatabase
-#        env:
-#          # Use secret in real usage
-#        - name: MYSQL_ROOT_PASSWORD
-#          value: c8de110f37300a53a971749
-#        ports:
-#        - containerPort: 3306
-#          name: cpdatabase
-#        args:
-#          - "--ssl=0"
-#        volumeMounts:
-#        - name: cpdatabase-persistent-storage
-#          mountPath: /var/lib/mysql
-#      volumes:
-#      - name: cpdatabase-persistent-storage
-#        persistentVolumeClaim:
-#          claimName: cpdatabase-pv-claim
-
----
-
-#apiVersion: v1
-#kind: Service
-#metadata:
-#  creationTimestamp: null
-#  labels:
-#    run: apache
-#  name: apache
-#spec:
-#  ports:
-#  - port: 80
-#    protocol: TCP
-#    targetPort: 80
-#  selector:
-#    run: apache
-#  type: LoadBalancer
-#status:
-#  loadBalancer: {}
-#
-#---
 
 apiVersion: v1
 kind: Service
@@ -219,7 +170,7 @@ spec:
     route:
     - destination:
         port:
-          number: 80
+          number: 8081
         host: category.default.svc.cluster.local
 
 ---
@@ -242,6 +193,6 @@ spec:
     route:
     - destination:
         port:
-          number: 80
+          number: 8082
         host: product.default.svc.cluster.local
 
