@@ -1,13 +1,11 @@
 TODO:
-- Kubernetes zum laufen bringen:
-	- Build Script für Docker
-	- Deployment Script Kubernetes
-	- Stateful application und persistence volume für Datenbank
-	- Apache Reverse Proxy einrichten
-- Experimente:
-	- Load Balancing in Repsonse sichtbar machen, einen Microservice mit 3 Replicas
-	- Ein Pod Löschen probieren, was passiert?
-- Istio:
-	- Istio migrieren
-	- Aufrufe beobachten in Prometeus und Graphana
-	- Topologier mit Kiali anzeigen lassen
+- Frontend Integration:
+	- Web shop auf Microservice deployen
+	- Web shop aufrufbar machen
+	- Web shop Aufrufe auf Microservices umbauen
+- Test:
+	- Funktionale und nicht funktionale Tests
+	- Use cases zum zeigen ausdenken
+	- Antwortzeiten der Aktionen evaluieren
+	- Load balancing untersuchen
+	
