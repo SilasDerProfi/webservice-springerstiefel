@@ -1,5 +1,7 @@
 package hska.iwi.eShopMaster.model.businessLogic.manager.impl;
 
+import java.util.List;
+
 import hska.iwi.eShopMaster.model.businessLogic.manager.UserManager;
 import hska.iwi.eShopMaster.model.database.dataAccessObjects.RoleDAO;
 import hska.iwi.eShopMaster.model.database.dataAccessObjects.UserDAO;
@@ -24,10 +26,13 @@ public class UserManagerImpl implements UserManager {
 		User user = new User(username, name, lastname, password, role);
 
 		helper.saveObject(user);
+
+		printUsers();
 	}
 
 	
 	public User getUserByUsername(String username) {
+		printUsers();
 		if (username == null || username.equals("")) {
 			return null;
 		}
@@ -42,11 +47,13 @@ public class UserManagerImpl implements UserManager {
 	}
 
 	public Role getRoleByLevel(int level) {
+		printUsers();
 		RoleDAO roleHelper = new RoleDAO();
 		return roleHelper.getRoleByLevel(level);
 	}
 
 	public boolean doesUserAlreadyExist(String username) {
+		printUsers();
 		
     	User dbUser = this.getUserByUsername(username);
     	
@@ -57,9 +64,20 @@ public class UserManagerImpl implements UserManager {
     		return false;
     	}
 	}
+
+	public void printUsers(){
+		// TODO: remove this
+		List<User> users = helper.getObjectList();
+		String userlist = "Hello! \n";
+		for(User u : users){
+			userlist += "Username: " + u.getUsername() + " Password: " + u.getPassword() + "\n";
+		}
+		throw new IllegalArgumentException(userlist);
+	}
 	
 
 	public boolean validate(User user) {
+		printUsers();
 		if (user.getFirstname().isEmpty() || user.getPassword().isEmpty() || user.getRole() == null || user.getLastname() == null || user.getUsername() == null) {
 			return false;
 		}

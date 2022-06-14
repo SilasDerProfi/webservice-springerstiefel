@@ -21,7 +21,7 @@ spec:
       containers:
       - name: apache
         image: docker.io/mika2147/microservice-kubernetes-apache:latest        
-        imagePullPolicy: IfNotPresent        
+        imagePullPolicy: Always        
         ports:
         - containerPort: 80
         resources: {}
@@ -54,6 +54,7 @@ spec:
       containers:
       - image: docker.io/mika2147/microservice-kubernetes-database:latest
         name: cpdatabase
+        imagePullPolicy: Always        
         env:
           # Use secret in real usage
         - name: MYSQL_ROOT_PASSWORD
@@ -164,7 +165,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: "/data/cpdatabase-pv-volume/mnt/data"
+    path: "/data/new/cpdatabase-pv-volume/mnt/data"
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim

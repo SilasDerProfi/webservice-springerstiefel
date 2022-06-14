@@ -2,3 +2,4 @@ FROM mysql:5.7.17
 
 COPY ./sql/init-category-db.sql /docker-entrypoint-initdb.d/init-category-db.sql
 COPY ./sql/init-product-db.sql /docker-entrypoint-initdb.d/init-product-db.sql
+COPY ./sql/init-webshop-db.sql /docker-entrypoint-initdb.d/init-webshop-db.sql
