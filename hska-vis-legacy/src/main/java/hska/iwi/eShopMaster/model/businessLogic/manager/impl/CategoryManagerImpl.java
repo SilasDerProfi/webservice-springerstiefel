@@ -1,17 +1,21 @@
 package hska.iwi.eShopMaster.model.businessLogic.manager.impl;
 
 
+import hska.iwi.eShopMaster.model.api.CategoryApiConnector;
+import hska.iwi.eShopMaster.model.api.impl.CategoryApiConnectorImpl;
 import hska.iwi.eShopMaster.model.businessLogic.manager.CategoryManager;
-import hska.iwi.eShopMaster.model.database.dataAccessObjects.CategoryDAO;
 import hska.iwi.eShopMaster.model.database.dataobjects.Category;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CategoryManagerImpl implements CategoryManager{
-	private CategoryDAO helper;
 	
+	CategoryApiConnector helper;
+
 	public CategoryManagerImpl() {
-		helper = new CategoryDAO();
+		helper = new CategoryApiConnectorImpl();
+		
 	}
 
 	public List<Category> getCategories() {
@@ -27,7 +31,8 @@ public class CategoryManagerImpl implements CategoryManager{
 	}
 
 	public void addCategory(String name) {
-		Category cat = new Category(name);
+		Category cat = new Category();
+		cat.setName(name);
 		helper.saveObject(cat);
 
 	}

@@ -1,18 +1,20 @@
 package hska.iwi.eShopMaster.model.businessLogic.manager.impl;
 
+import hska.iwi.eShopMaster.model.api.ProductApiConnector;
+import hska.iwi.eShopMaster.model.api.impl.ProductApiConnectorImpl;
 import hska.iwi.eShopMaster.model.businessLogic.manager.CategoryManager;
 import hska.iwi.eShopMaster.model.businessLogic.manager.ProductManager;
-import hska.iwi.eShopMaster.model.database.dataAccessObjects.ProductDAO;
 import hska.iwi.eShopMaster.model.database.dataobjects.Category;
 import hska.iwi.eShopMaster.model.database.dataobjects.Product;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProductManagerImpl implements ProductManager {
-	private ProductDAO helper;
-	
-	public ProductManagerImpl() {
-		helper = new ProductDAO();
+	ProductApiConnector helper;
+
+	public ProductManagerImpl(){
+		helper = new ProductApiConnectorImpl();
 	}
 
 	public List<Product> getProducts() {
@@ -21,7 +23,7 @@ public class ProductManagerImpl implements ProductManager {
 	
 	public List<Product> getProductsForSearchValues(String searchDescription,
 			Double searchMinPrice, Double searchMaxPrice) {	
-		return new ProductDAO().getProductListByCriteria(searchDescription, searchMinPrice, searchMaxPrice);
+		return helper.getProductListByCriteria(searchDescription, searchMinPrice, searchMaxPrice);
 	}
 
 	public Product getProductById(int id) {
@@ -59,8 +61,7 @@ public class ProductManagerImpl implements ProductManager {
 	}
 
 	public boolean deleteProductsByCategoryId(int categoryId) {
-		// TODO Auto-generated method stub
-		return false;
+		return helper.deleteProductsByCategoryId(categoryId);
 	}
 
 }

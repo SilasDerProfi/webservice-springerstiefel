@@ -1,6 +1,8 @@
 CREATE USER 'webshop'@'%' IDENTIFIED BY 'geheim';
 CREATE DATABASE webshop;
 
+USE webshop;
+
 CREATE TABLE role (
 	id INT NOT NULL AUTO_INCREMENT,
 	level1 INT,

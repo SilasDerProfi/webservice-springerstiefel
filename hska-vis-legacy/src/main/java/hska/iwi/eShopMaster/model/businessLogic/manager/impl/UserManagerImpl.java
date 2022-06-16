@@ -27,12 +27,10 @@ public class UserManagerImpl implements UserManager {
 
 		helper.saveObject(user);
 
-		printUsers();
 	}
 
 	
 	public User getUserByUsername(String username) {
-		printUsers();
 		if (username == null || username.equals("")) {
 			return null;
 		}
@@ -47,13 +45,11 @@ public class UserManagerImpl implements UserManager {
 	}
 
 	public Role getRoleByLevel(int level) {
-		printUsers();
 		RoleDAO roleHelper = new RoleDAO();
 		return roleHelper.getRoleByLevel(level);
 	}
 
 	public boolean doesUserAlreadyExist(String username) {
-		printUsers();
 		
     	User dbUser = this.getUserByUsername(username);
     	
@@ -65,7 +61,7 @@ public class UserManagerImpl implements UserManager {
     	}
 	}
 
-	public void printUsers(){
+	/*public void printUsers(){
 		// TODO: remove this
 		List<User> users = helper.getObjectList();
 		String userlist = "Hello! \n";
@@ -73,11 +69,10 @@ public class UserManagerImpl implements UserManager {
 			userlist += "Username: " + u.getUsername() + " Password: " + u.getPassword() + "\n";
 		}
 		throw new IllegalArgumentException(userlist);
-	}
+	}*/
 	
 
 	public boolean validate(User user) {
-		printUsers();
 		if (user.getFirstname().isEmpty() || user.getPassword().isEmpty() || user.getRole() == null || user.getLastname() == null || user.getUsername() == null) {
 			return false;
 		}

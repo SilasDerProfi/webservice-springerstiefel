@@ -25,6 +25,7 @@ public class LoginAction extends ActionSupport {
 	@Override
 	public String execute() throws Exception {
 
+	
 		// Return string:
 		String result = "input";
 
