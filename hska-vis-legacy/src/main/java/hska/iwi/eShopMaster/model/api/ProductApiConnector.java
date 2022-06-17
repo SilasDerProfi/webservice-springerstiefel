@@ -10,7 +10,7 @@ public interface ProductApiConnector {
 
     List<Product> getProductListByCriteria(String searchDescription, Double searchMinPrice, Double searchMaxPrice);
 
-    Product getObjectById(String name);
+    Product getObjectByName(String name);
 
     void saveObject(Product product);
 
