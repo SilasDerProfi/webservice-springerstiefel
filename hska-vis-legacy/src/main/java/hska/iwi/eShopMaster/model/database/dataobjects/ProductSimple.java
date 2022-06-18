@@ -6,7 +6,7 @@ import javax.persistence.*;
 /**
  * This class contains details about products.
  */
-public class Product implements java.io.Serializable {
+public class ProductSimple implements java.io.Serializable {
 
 	/**
 	 * 
@@ -20,31 +20,23 @@ public class Product implements java.io.Serializable {
 	private double price;
 
 	
-	private Category category;
+	private int categoryId;
 
 	private String details;
 
-	public Product() {
-	}
-	
-	public Product(ProductSimple product, Category category) {
-		this.id = product.getId();
-		this.name = product.getName();
-		this.price = product.getPrice();
-		this.details = product.getDetails();
-		this.category = category;
+	public ProductSimple() {
 	}
 
-	public Product(String name, double price, Category category) {
+	public ProductSimple(String name, double price, int categoryId) {
 		this.name = name;
 		this.price = price;
-		this.category = category;
+		this.categoryId = categoryId;
 	}
 
-	public Product(String name, double price, Category category, String details) {
+	public ProductSimple(String name, double price, int categoryId, String details) {
 		this.name = name;
 		this.price = price;
-		this.category = category;
+		this.categoryId = categoryId;
 		this.details = details;
 	}
 
@@ -72,12 +64,12 @@ public class Product implements java.io.Serializable {
 		this.price = price;
 	}
 
-	public Category getCategory() {
-		return this.category;
+	public int getCategoryId() {
+		return this.categoryId;
 	}
 
-	public void setCategory(Category category) {
-		this.category = category;
+	public void setCategoryId(int categoryId) {
+		this.categoryId = categoryId;
 	}
 
 	public String getDetails() {

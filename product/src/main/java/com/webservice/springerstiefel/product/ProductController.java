@@ -75,8 +75,8 @@ public class ProductController {
     @GetMapping()
     public @ResponseBody Iterable<Product> getAll(
     		@RequestParam(defaultValue="") String description,
-    		@RequestParam(defaultValue="0") int minPrice,
-    		@RequestParam(defaultValue="" + Integer.MAX_VALUE) int maxPrice, HttpServletResponse response) {
+    		@RequestParam(defaultValue="0") double minPrice,
+    		@RequestParam(defaultValue="" + Double.MAX_VALUE) double maxPrice, HttpServletResponse response) {
         response.setHeader("Pod-Name", System.getenv("HOSTNAME"));
 
     	List<Product> products = new ArrayList<>();
