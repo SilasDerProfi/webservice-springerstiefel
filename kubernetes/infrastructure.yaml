@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: apache
-        image: docker.io/mika2147/microservice-kubernetes-apache:latest        
+        image: docker.io/felixleh/microservice-kubernetes-apache:latest        
         imagePullPolicy: Always        
         ports:
         - containerPort: 80
@@ -52,7 +52,7 @@ spec:
         app: cpdatabase
     spec:
       containers:
-      - image: docker.io/mika2147/microservice-kubernetes-database:latest
+      - image: docker.io/felixleh/microservice-kubernetes-database:latest
         name: cpdatabase
         imagePullPolicy: Always        
         env:
@@ -133,24 +133,24 @@ spec:
 
 ---
 
-apiVersion: networking.istio.io/v1alpha3
-kind: VirtualService
-metadata:
-  name: apache
-spec:
-  hosts:
-  - "*"
-  gateways:
-  - microservice-gateway
-  http:
-  - match:
-    - uri:
-        prefix: /
-    route:
-    - destination:
-        port:
-          number: 80
-        host: apache.default.svc.cluster.local
+#apiVersion: networking.istio.io/v1alpha3
+#kind: VirtualService
+#metadata:
+#  name: apache
+#spec:
+#  hosts:
+#  - "*"
+#  gateways:
+#  - microservice-gateway
+#  http:
+#  - match:
+#    - uri:
+#        prefix: /
+#    route:
+#    - destination:
+#        port:
+#          number: 80
+#        host: apache.default.svc.cluster.local
 
 apiVersion: v1
 kind: PersistentVolume

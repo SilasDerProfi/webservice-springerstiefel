@@ -37,7 +37,7 @@ spec:
         run: category
     spec:
       containers:
-      - image: docker.io/mika2147/microservice-kubernetes-category:latest
+      - image: docker.io/felixleh/microservice-kubernetes-category:latest
         name: category
         env:
         - name: MYSQL_HOST
@@ -78,7 +78,7 @@ spec:
         run: product
     spec:
       containers:
-      - image: docker.io/mika2147/microservice-kubernetes-product:latest
+      - image: docker.io/felixleh/microservice-kubernetes-product:latest
         name: product
         env:
         - name: MYSQL_HOST
@@ -119,7 +119,7 @@ spec:
         run: webshop
     spec:
       containers:
-      - image: docker.io/mika2147/microservice-kubernetes-webshop:latest
+      - image: docker.io/felixleh/microservice-kubernetes-webshop:latest
         name: webshop
         env:
         - name: MYSQL_HOST
@@ -188,7 +188,7 @@ metadata:
   name: webshop
 spec:
   ports:
-  - port: 8080
+  - port: 80
     protocol: TCP
     targetPort: 8080
   selector:
@@ -212,51 +212,51 @@ status:
 #---
 
 
-apiVersion: networking.istio.io/v1alpha3
-kind: VirtualService
-metadata:
-  name: category
-spec:
-  hosts:
-  - "*"
-  gateways:
-  - microservice-gateway
-  http:
-  - match:
-    - uri:
-        prefix: /categories/
-    rewrite:
-      uri: /
-    route:
-    - destination:
-        port:
-          number: 8081
-        host: category.default.svc.cluster.local
-
----
-
-apiVersion: networking.istio.io/v1alpha3
-kind: VirtualService
-metadata:
-  name: product
-spec:
-  hosts:
-  - "*"
-  gateways:
-  - microservice-gateway
-  http:
-  - match:
-    - uri:
-        prefix: /products/
-    rewrite:
-      uri: /
-    route:
-    - destination:
-        port:
-          number: 8082
-        host: product.default.svc.cluster.local
-
----
+#apiVersion: networking.istio.io/v1alpha3
+#kind: VirtualService
+#metadata:
+#  name: category
+#spec:
+#  hosts:
+#  - "*"
+#  gateways:
+#  - microservice-gateway
+#  http:
+#  - match:
+#    - uri:
+#        prefix: /categories/
+#    rewrite:
+#      uri: /
+#    route:
+#    - destination:
+#        port:
+#          number: 8081
+#        host: category.default.svc.cluster.local
+#
+#---
+#
+#apiVersion: networking.istio.io/v1alpha3
+#kind: VirtualService
+#metadata:
+#  name: product
+#spec:
+#  hosts:
+#  - "*"
+#  gateways:
+#  - microservice-gateway
+#  http:
+#  - match:
+#    - uri:
+#        prefix: /products/
+#    rewrite:
+#      uri: /
+#    route:
+#    - destination:
+#        port:
+#          number: 8082
+#        host: product.default.svc.cluster.local
+#
+#---
 
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
@@ -270,14 +270,14 @@ spec:
   http:
   - match:
     - uri:
-        prefix: /webshop/
+        prefix: /
     rewrite:
       uri: /
     route:
     - destination:
         port:
-          number: 8080
-        host: webshop.default.svc.cluster.local
+          number: 80
+        host: webshop
 
 ---
 
